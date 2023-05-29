@@ -1,0 +1,44 @@
+{
+	"manifest_version": 3,
+	"name": "FrankerFaceZ",
+	"short_name": "FFZ",
+	"version": "__DEV__",
+
+	"description": "Get custom emotes and tons of new features you'll never want to go without.",
+	"icons": {
+		"128": "icon128.png",
+		"16": "icon16.png",
+		"48": "icon48.png"
+	},
+
+	"homepage_url": "http://www.frankerfacez.com",
+	"permissions": [
+        "storage"
+    ],
+    "host_permissions": [
+		"*://*.twitch.tv/*",
+		"*://*.frankerfacez.com/*"
+	],
+
+    "web_accessible_resources": [
+        {
+            "resources": ["web/*"],
+            "matches": [
+                "*://*.twitch.tv/*",
+                "*://*.youtube.com/*"
+            ]
+        }
+    ],
+
+	"content_scripts": [ {
+		"all_frames": true,
+		"js": [ "web/script.min.js" ],
+		"matches": [ "*://*.twitch.tv/*" ],
+		"exclude_globs": [ "*://api.twitch.tv/*" ]
+	} ],
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "frankerfacez@frankerfacez.com"
+		}
+	}
+}

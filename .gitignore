@@ -1,0 +1,12 @@
+# Ignoring the main input / output folders
+dist/
+
+# WebStorm project files
+.idea/
+
+# Ignoring node modules
+node_modules/
+
+# Ignore the client / addons folders
+addons/
+client/

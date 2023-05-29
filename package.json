@@ -1,0 +1,13 @@
+{
+  "name": "ffz-extension-manifest-v3",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "git-pull-or-clone": "^2.0.2",
+    "rimraf": "^3.0.2",
+    "fs-extra": "^11.1.1"
+  }
+}
