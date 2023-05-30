@@ -1,0 +1,6 @@
+[submodule "addons"]
+	path = addons
+	url = https://github.com/FrankerFaceZ/Add-Ons
+[submodule "client"]
+	path = client
+	url = https://github.com/FrankerFaceZ/FrankerFaceZ
