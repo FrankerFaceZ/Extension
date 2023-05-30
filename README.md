@@ -37,6 +37,7 @@ Requirements
 How to Use
 ==========
 1. Ensure you have the requirements installed on your machine.
-2. Run the command `pnpm install` to ensure you have dependencies installed for this tool.
-3. Run the command `pnpm build` to run the build script.
-4. Find the results in the `dist` folder.
+2. Ensure the `addons` and `client` git sub-modules have been populated.
+3. Run the command `pnpm install` to ensure you have dependencies installed for this tool.
+4. Run the command `pnpm build` to run the build script.
+5. Find the results in the `dist` folder.
