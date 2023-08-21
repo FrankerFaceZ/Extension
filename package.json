@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "clone": "node clone.mjs",
-    "build": "node build.mjs"
+    "build": "node build.mjs",
+    "clean": "rimraf dist"
   },
   "dependencies": {
     "git-pull-or-clone": "^2.0.2",
