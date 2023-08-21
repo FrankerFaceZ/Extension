@@ -3,11 +3,9 @@ import { promises as fs } from 'fs';
 import fse from 'fs-extra';
 import { promisify } from 'util';
 import { exec } from 'child_process';
-import gitPullOrClone from 'git-pull-or-clone';
 import { default as rimraf_cb } from 'rimraf';
 
 const rimraf = promisify(rimraf_cb);
-const pull = promisify(gitPullOrClone);
 
 const env = {
     ...process.env,
@@ -33,25 +31,12 @@ function execShellCommand(cmd, options = {}) {
     });
 }
 
-console.log('Pulling repositories...');
-
-process.chdir('client');
-await execShellCommand('git pull origin master');
-process.chdir('..');
-
-process.chdir('addons');
-await execShellCommand('git pull origin master');
-process.chdir('..');
-
-//await pull('https://github.com/FrankerFaceZ/FrankerFaceZ.git', 'client');
-//await pull('https://github.com/FrankerFaceZ/Add-Ons.git', 'addons');
-
 process.chdir('client');
 console.log(`Building client... (CWD: ${process.cwd()})`);
 await execShellCommand('pnpm install', {
     env: {
         ...process.env,
-        //CI: true
+        CI: true
     }
 });
 await execShellCommand('pnpm clean');
@@ -65,7 +50,7 @@ console.log(`Building addons... (CWD: ${process.cwd()})`);
 await execShellCommand('pnpm install', {
     env: {
         ...process.env,
-        //CI: true
+        CI: true
     }
 });
 await execShellCommand('pnpm clean');

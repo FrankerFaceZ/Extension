@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "clone": "node clone.mjs",
     "build": "node build.mjs"
   },
   "dependencies": {
