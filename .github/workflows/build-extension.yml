@@ -40,7 +40,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: source
-          include-hidden-files: true
           path: |
             client/*
             addons/*
