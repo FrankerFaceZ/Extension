@@ -1,0 +1,8 @@
+{
+  "name": "ffz-extension-manifest-v3",
+  "private": true,
+  "scripts": {},
+  "dependencies": {
+    "web-ext": "^8.3.0"
+  }
+}
