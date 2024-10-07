@@ -22,9 +22,6 @@ jobs:
           node-version: '16.x'
           cache: 'pnpm'
 
-      - name: Install Dependencies
-        run: pnpm install
-
       - name: Clone FrankerFaceZ Repository
         run: |
           git clone https://github.com/FrankerFaceZ/FrankerFaceZ.git client
@@ -32,6 +29,17 @@ jobs:
       - name: Clone Add-Ons Repository
         run: |
           git clone https://github.com/FrankerFaceZ/Add-Ons.git addons
+
+      - name: Make a Source Artifact for Firefox
+        id: source-upload-step
+        uses: actions/upload-artifact@v4
+        with:
+          name: source
+          path: |
+            .github/*
+            client/*
+            addons/*
+            src/*
 
       - name: Calculate and Log Version
         run: |
@@ -77,18 +85,22 @@ jobs:
           FFZ_EXTENSION=true pnpm build
           cd ..
 
-      - name: Run Final Build
-        run: pnpm build
-
-      - name: Package for Firefox
+      - name: Copy Build Output
         run: |
-          echo "TODO: THIS"
+          set -e
+          mkdir dist
+          mkdir dist/web
+          cp -r client/dist/* dist/web/
+          cp -r addons/dist/* dist/web/
+          cp -rf src/* dist/
 
-      - name: Package for Chrome
-        run: |
-          echo "TODO: THIS"
+      - name:  Rename the Add-Ons Manifest
+        run: node rename-addon-manifest.js
 
-      - name: Upload Artifacts
+      - name: Edit Manifest (Insert Version)
+        run: node update-manifest.js
+
+      - name: Upload Output
         id: artifact-upload-step
         if: success()
         uses: actions/upload-artifact@v4
@@ -105,10 +117,11 @@ jobs:
           embed-title: ✅ Extension Build Succeeded
           embed-url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
           embed-description: |
-            **Version**: ${{ env.FFZ_VERSION }}+${{ env.FFZ_BUILD }}
-            **Main Client Commit**: ${{ env.CLIENT_COMMIT_HASH }}
-            **Add-Ons Commit**: ${{ env.ADDONS_COMMIT_HASH }}
+            **Version**: ${{ env.FFZ_VERSION }}.${{ env.FFZ_BUILD }}
+            **Main Client Commit**: [${{ env.CLIENT_COMMIT_HASH }}](<https://github.com/FrankerFaceZ/FrankerFaceZ/commit/${{ env.CLIENT_COMMIT_HASH }}>)
+            **Add-Ons Commit**: [${{ env.ADDONS_COMMIT_HASH }}](<https://github.com/FrankerFaceZ/Add-Ons/commit/${{ env.ADDONS_COMMIT_HASH }}>)
             
+            [Download Source](<${{ steps.source-upload-step.outputs.artifact-url }}>)
             [Download Artifact](<${{ steps.artifact-upload-step.outputs.artifact-url }}>)
 
       - name: Report Failure
@@ -120,8 +133,10 @@ jobs:
           embed-title: ❌ Extension Build Failed
           embed-url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
           embed-description: |
-            **Version**: ${{ env.FFZ_VERSION }}+${{ env.FFZ_BUILD }}
-            **Main Client Commit**: ${{ env.CLIENT_COMMIT_HASH }}
-            **Add-Ons Commit**: ${{ env.ADDONS_COMMIT_HASH }}
+            **Version**: ${{ env.FFZ_VERSION }}.${{ env.FFZ_BUILD }}
+            **Main Client Commit**: [${{ env.CLIENT_COMMIT_HASH }}](<https://github.com/FrankerFaceZ/FrankerFaceZ/commit/${{ env.CLIENT_COMMIT_HASH }}>)
+            **Add-Ons Commit**: [${{ env.ADDONS_COMMIT_HASH }}](<https://github.com/FrankerFaceZ/Add-Ons/commit/${{ env.ADDONS_COMMIT_HASH }}>)
             
             Please check the logs for details.
+            
+            [Download Source](<${{ steps.source-upload-step.outputs.artifact-url }}>)
