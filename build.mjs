@@ -42,6 +42,6 @@ await fse.copy('src', 'dist', {
 // Now, edit the manifest to include a version.
 
 const manifest = JSON.parse(await fs.readFile('dist/manifest.json'));
-manifest.version = `${process.env.FFZ_VERSION}+${process.env.FFZ_BUILD}`;
+manifest.version = `${process.env.FFZ_VERSION}.${process.env.FFZ_BUILD}`;
 
 await fs.writeFile('dist/manifest.json', JSON.stringify(manifest, null, '\t'));

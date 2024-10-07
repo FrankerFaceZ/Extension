@@ -33,12 +33,14 @@ jobs:
         run: |
           git clone https://github.com/FrankerFaceZ/Add-Ons.git addons
 
-      - name: Calculate Version
+      - name: Calculate and Log Version
         run: |
           # Get the version of the main client.
           cd client
           VERSION=$(node -p "require('./package.json').version")
+          CLIENT_COMMIT_HASH=$(git rev-parse HEAD)
           echo "Main Client Version: $VERSION"
+          echo "Main Client Commit: $CLIENT_COMMIT_HASH"
           
           # Now determine when the version was last modified.
           LAST_MODIFIED=$(git log -1 --pretty=format:%ct -- package.json)
@@ -47,12 +49,17 @@ jobs:
           
           # Navigate to the Add-Ons next.
           cd addons
+          # And extract the relevant info
           # And count the number of commits since the last modified time.
+          ADDONS_COMMIT_HASH=$(git rev-parse HEAD)
           BUILD=$(git rev-list --count --since=@$LAST_MODIFIED HEAD)
+          echo "Add-Ons Commit: $ADDONS_COMMIT_HASH"
           echo "Build Number (add-on commits since last main client update): $BUILD"
           cd ..
           
           # Export FFZ_VERSION and FFZ_BUILD as an environment variable for subsequent steps.
+          echo "CLIENT_COMMIT_HASH=$CLIENT_COMMIT_HASH" >> $GITHUB_ENV
+          echo "ADDONS_COMMIT_HASH=$ADDONS_COMMIT_HASH" >> $GITHUB_ENV
           echo "FFZ_VERSION=$VERSION" >> $GITHUB_ENV
           echo "FFZ_BUILD=$BUILD" >> $GITHUB_ENV
 
@@ -82,7 +89,31 @@ jobs:
           echo "TODO: THIS"
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
+        if: success()
+        uses: actions/upload-artifact@v4
         with:
           name: built
           path: dist/*
+
+      - name: Report Success
+        if: success()
+        uses: tsickert/discord-webhook@v5.3.0
+        with:
+          webhook-url: ${{ secrets.WEBHOOK_URL }}
+          content: |
+            🎉 **Extension build completed successfully.**
+            **Version**: ${{ env.FFZ_VERSION }}+${{ env.FFZ_BUILD }}
+            **Main Client Commit**: ${{ env.CLIENT_COMMIT_HASH }}
+            **Add-Ons Commit**: ${{ env.ADDONS_COMMIT_HASH }}
+
+      - name: Report Failure
+        if: failure()
+        uses: tsickert/discord-webhook@v5.3.0
+        with:
+          webhook-url: ${{ secrets.WEBHOOK_URL }}
+          content: |
+            ⚠️ **Extension build failed.**
+            **Version**: ${{ env.FFZ_VERSION }}+${{ env.FFZ_BUILD }}
+            **Main Client Commit**: ${{ env.CLIENT_COMMIT_HASH }}
+            **Add-Ons Commit**: ${{ env.ADDONS_COMMIT_HASH }}
+            Please check the logs for details.
