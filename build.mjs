@@ -9,7 +9,7 @@ const rimraf = promisify(rimraf_cb);
 
 const env = {
     ...process.env,
-    NODE_OPTIONS: '--openssl-legacy-provider',
+    //NODE_OPTIONS: '--openssl-legacy-provider',
     FFZ_EXTENSION: true
 };
 
