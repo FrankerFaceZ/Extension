@@ -33,8 +33,53 @@ jobs:
         run: |
           git clone https://github.com/FrankerFaceZ/Add-Ons.git addons
 
-      - name: Run Build Script
+      - name: Calculate Version
+        run: |
+          # Get the version of the main client.
+          cd client
+          VERSION=$(node -p "require('./package.json').version")
+          echo "Main Client Version: $VERSION"
+          
+          # Now determine when the version was last modified.
+          LAST_MODIFIED=$(git log -1 --pretty=format:%ct -- package.json)
+          echo "Last Modified: $LAST_MODIFIED"
+          cd ..
+          
+          # Navigate to the Add-Ons next.
+          cd addons
+          # And count the number of commits since the last modified time.
+          BUILD=$(git rev-list --count --since=@$LAST_MODIFIED HEAD)
+          echo "Build Number (add-on commits since last main client update): $BUILD"
+          cd ..
+          
+          # Export FFZ_VERSION and FFZ_BUILD as an environment variable for subsequent steps.
+          echo "FFZ_VERSION=$VERSION" >> $GITHUB_ENV
+          echo "FFZ_BUILD=$BUILD" >> $GITHUB_ENV
+
+      - name: Build the Main Client
+        run: |
+          cd client
+          pnpm install
+          FFZ_EXTENSION=true pnpm build
+          cd ..
+
+      - name: Build the Add-Ons Repository
+        run: |
+          cd addons
+          pnpm install
+          FFZ_EXTENSION=true pnpm build
+          cd ..
+
+      - name: Run Final Build
         run: pnpm build
+
+      - name: Package for Firefox
+        run: |
+          echo "TODO: THIS"
+
+      - name: Package for Chrome
+        run: |
+          echo "TODO: THIS"
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
