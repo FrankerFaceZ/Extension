@@ -14,12 +14,12 @@ jobs:
       - name: Uses PNPM
         uses: pnpm/action-setup@v2.0.1
         with:
-          version: 6.20.4
+          version: 8.10.2
 
-      - name: Uses Node.js 16.x
+      - name: Uses Node.js 18.x
         uses: actions/setup-node@v2
         with:
-          node-version: '16.x'
+          node-version: '18.x'
           cache: 'pnpm'
 
       - name: Clone FrankerFaceZ Repository
@@ -36,40 +36,16 @@ jobs:
         with:
           name: source
           path: |
-            .github/*
             client/*
             addons/*
             src/*
+            scripts/*
+            README.md
 
       - name: Calculate and Log Version
         run: |
-          # Get the version of the main client.
-          cd client
-          VERSION=$(node -p "require('./package.json').version")
-          CLIENT_COMMIT_HASH=$(git rev-parse HEAD)
-          echo "Main Client Version: $VERSION"
-          echo "Main Client Commit: $CLIENT_COMMIT_HASH"
-          
-          # Now determine when the version was last modified.
-          LAST_MODIFIED=$(git log -1 --pretty=format:%ct -- package.json)
-          echo "Last Modified: $LAST_MODIFIED"
-          cd ..
-          
-          # Navigate to the Add-Ons next.
-          cd addons
-          # And extract the relevant info
-          # And count the number of commits since the last modified time.
-          ADDONS_COMMIT_HASH=$(git rev-parse HEAD)
-          BUILD=$(git rev-list --count --since=@$LAST_MODIFIED HEAD)
-          echo "Add-Ons Commit: $ADDONS_COMMIT_HASH"
-          echo "Build Number (add-on commits since last main client update): $BUILD"
-          cd ..
-          
-          # Export FFZ_VERSION and FFZ_BUILD as an environment variable for subsequent steps.
-          echo "CLIENT_COMMIT_HASH=$CLIENT_COMMIT_HASH" >> $GITHUB_ENV
-          echo "ADDONS_COMMIT_HASH=$ADDONS_COMMIT_HASH" >> $GITHUB_ENV
-          echo "FFZ_VERSION=$VERSION" >> $GITHUB_ENV
-          echo "FFZ_BUILD=$BUILD" >> $GITHUB_ENV
+          ./scripts/calculate-version.sh
+          cat .env >> $GITHUB_ENV
 
       - name: Build the Main Client
         run: |
@@ -87,18 +63,10 @@ jobs:
 
       - name: Copy Build Output
         run: |
-          set -e
-          mkdir dist
-          mkdir dist/web
-          cp -r client/dist/* dist/web/
-          cp -r addons/dist/* dist/web/
-          cp -rf src/* dist/
-
-      - name:  Rename the Add-Ons Manifest
-        run: node rename-addon-manifest.js
+          ./scripts/copy-output.sh
 
       - name: Edit Manifest (Insert Version)
-        run: node update-manifest.js
+        run: node scripts/update-manifest.js
 
       - name: Upload Output
         id: artifact-upload-step
