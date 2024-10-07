@@ -5,7 +5,8 @@
   "scripts": {
     "clone": "node clone.mjs",
     "build": "node build.mjs",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "clean:sources": "rimraf client && rimraf addons"
   },
   "dependencies": {
     "git-pull-or-clone": "^2.0.2",

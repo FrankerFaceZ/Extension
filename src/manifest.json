@@ -20,6 +20,13 @@
 		"*://*.frankerfacez.com/*"
 	],
 
+	"externally_connectable": {
+		"matches": [
+			"*://*.twitch.tv/*",
+			"*://*.youtube.com/*"
+		]
+	},
+
     "web_accessible_resources": [
         {
             "resources": ["web/*"],
@@ -30,12 +37,25 @@
         }
     ],
 
-	"content_scripts": [ {
-		"all_frames": true,
-		"js": [ "web/script.min.js" ],
-		"matches": [ "*://*.twitch.tv/*" ],
-		"exclude_globs": [ "*://api.twitch.tv/*" ]
-	} ],
+	"content_scripts": [
+		{
+			"all_frames": true,
+			"js": [ "web/script.min.js" ],
+			"matches": [ "*://*.twitch.tv/*" ],
+			"exclude_globs": [
+				"*://api.twitch.tv/*",
+				"*://localhost.rig.twitch.tv/*",
+				"*://blog.twitch.tv/*",
+				"*://im.twitch.tv/*",
+				"*://chatdepot.twitch.tv/*",
+				"*://tmi.twitch.tv/*",
+				"*://brand.twitch.tv/*",
+				"*://dev.twitch.tv/*",
+				"*://gql.twitch.tv/*",
+				"*://passport.twitch.tv/*"
+			]
+		}
+	],
 	"browser_specific_settings": {
 		"gecko": {
 			"id": "frankerfacez@frankerfacez.com"

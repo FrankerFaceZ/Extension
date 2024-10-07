@@ -1,0 +1,43 @@
+name: Build Extension
+
+on:
+  repository_dispatch:
+    types: [build-trigger]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Extension Repo
+        uses: actions/checkout@v3
+
+      - name: Uses PNPM
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.20.4
+
+      - name: Uses Node.js 16.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Clone FrankerFaceZ Repository
+        run: |
+          git clone https://github.com/FrankerFaceZ/FrankerFaceZ.git client
+
+      - name: Clone Add-Ons Repository
+        run: |
+          git clone https://github.com/FrankerFaceZ/Add-Ons.git addons
+
+      - name: Run Build Script
+        run: pnpm build
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: built
+          path: dist/*
