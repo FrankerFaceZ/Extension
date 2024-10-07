@@ -29,46 +29,42 @@ How to Build
    git clone https://github.com/FrankerFaceZ/FrankerFaceZ.git client
    git clone https://github.com/FrankerFaceZ/Add-Ons.git addons
    ```
-3. Load the environment variables with the calculated version. If you
-   had to clone the repositories with git, you'll need to run the script
-   to calculate them instead.
-
-   If you downloaded a source archive, run this command:
-   ```bash
-   source ffz_env
-   ```
-
-   If you had to clone the repositories, run this command:
+3. If you had to download the code via git clone, run these commands to
+   calculate the correct version:
    ```bash
    chmod +x scripts/calculate-version.sh
    ./scripts/calculate-version.sh
    ```
-4. Build the main client.
+4. Run this command to load the appropriate environmental variables:
+   ```bash
+   source ffz_env
+   ```
+5. Build the main client.
    ```bash
    cd client
    pnpm install
    FFZ_EXTENSION=true pnpm build
    cd ..
    ```
-5. Build the add-ons.
+6. Build the add-ons.
    ```bash
    cd addons
    pnpm install
    FFZ_EXTENSION=true pnpm build
    cd ..
    ```
-5. Ensure you don't have a `dist` folder. Delete it if you do with:
+7. Ensure you don't have a `dist` folder. Delete it if you do with:
    ```bash
    rm -rf dist
    ```
-6. Copy the build output from steps 4 and 5 into the dist folder:
+8. Copy the build output from steps 5 and 6 into the `dist` folder:
    ```bash
    chmod +x scripts/copy-output.sh
    ./scripts/copy-output.sh
    ```
-7. Update the version in the manifest.
+9. Update the version in the manifest.
    ```bash
    node scripts/update-manifest.js
    ```
-8. Find the unpacked extension in the `dist` folder.
-9. Optionally, zip the contents of the `dist` as suits your needs.
+10. Find the unpacked extension in the `dist` folder.
+11. Optionally, zip the contents of the `dist` as suits your needs.

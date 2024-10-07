@@ -33,13 +33,14 @@ jobs:
       - name: Calculate and Log Version
         run: |
           ./scripts/calculate-version.sh
-          cat ffz_env >> $GITHUB_ENV
+          cat .env >> $GITHUB_ENV
 
       - name: Make a Source Artifact for Firefox
         id: source-upload-step
         uses: actions/upload-artifact@v4
         with:
           name: source
+          include-hidden-files: true
           path: |
             client/*
             addons/*
