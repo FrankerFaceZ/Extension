@@ -22,7 +22,7 @@ echo "Build Version: $BUILD"
 echo "Commit: $ADDONS_COMMIT"
 
 # Export our environmental variables
-echo "CLIENT_COMMIT=$CLIENT_COMMIT" >> .env
-echo "FFZ_VERSION=$VERSION" >> .env
-echo "ADDONS_COMMIT=$ADDONS_COMMIT" >> .env
-echo "FFZ_BUILD=$BUILD" >> .env
+echo "CLIENT_COMMIT=$CLIENT_COMMIT" >> ffz_env
+echo "FFZ_VERSION=$VERSION" >> ffz_env
+echo "ADDONS_COMMIT=$ADDONS_COMMIT" >> ffz_env
+echo "FFZ_BUILD=$BUILD" >> ffz_env

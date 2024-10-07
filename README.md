@@ -29,8 +29,18 @@ How to Build
    git clone https://github.com/FrankerFaceZ/FrankerFaceZ.git client
    git clone https://github.com/FrankerFaceZ/Add-Ons.git addons
    ```
-3. Run the following script to calculate the correct version:
+3. Load the environment variables with the calculated version. If you
+   had to clone the repositories with git, you'll need to run the script
+   to calculate them instead.
+
+   If you downloaded a source archive, run this command:
    ```bash
+   source ffz_env
+   ```
+
+   If you had to clone the repositories, run this command:
+   ```bash
+   chmod +x scripts/calculate-version.sh
    ./scripts/calculate-version.sh
    ```
 4. Build the main client.
@@ -53,6 +63,7 @@ How to Build
    ```
 6. Copy the build output from steps 4 and 5 into the dist folder:
    ```bash
+   chmod +x scripts/copy-output.sh
    ./scripts/copy-output.sh
    ```
 7. Update the version in the manifest.

@@ -30,6 +30,11 @@ jobs:
         run: |
           git clone https://github.com/FrankerFaceZ/Add-Ons.git addons
 
+      - name: Calculate and Log Version
+        run: |
+          ./scripts/calculate-version.sh
+          cat ffz_env >> $GITHUB_ENV
+
       - name: Make a Source Artifact for Firefox
         id: source-upload-step
         uses: actions/upload-artifact@v4
@@ -40,12 +45,8 @@ jobs:
             addons/*
             src/*
             scripts/*
+            ffz_env
             README.md
-
-      - name: Calculate and Log Version
-        run: |
-          ./scripts/calculate-version.sh
-          cat .env >> $GITHUB_ENV
 
       - name: Build the Main Client
         run: |
@@ -86,8 +87,8 @@ jobs:
           embed-url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
           embed-description: |
             **Version**: ${{ env.FFZ_VERSION }}.${{ env.FFZ_BUILD }}
-            **Main Client Commit**: [${{ env.CLIENT_COMMIT_HASH }}](<https://github.com/FrankerFaceZ/FrankerFaceZ/commit/${{ env.CLIENT_COMMIT_HASH }}>)
-            **Add-Ons Commit**: [${{ env.ADDONS_COMMIT_HASH }}](<https://github.com/FrankerFaceZ/Add-Ons/commit/${{ env.ADDONS_COMMIT_HASH }}>)
+            **Main Client Commit**: [${{ env.CLIENT_COMMIT }}](<https://github.com/FrankerFaceZ/FrankerFaceZ/commit/${{ env.CLIENT_COMMIT }}>)
+            **Add-Ons Commit**: [${{ env.ADDONS_COMMIT }}](<https://github.com/FrankerFaceZ/Add-Ons/commit/${{ env.ADDONS_COMMIT }}>)
             
             [Download Source](<${{ steps.source-upload-step.outputs.artifact-url }}>)
             [Download Artifact](<${{ steps.artifact-upload-step.outputs.artifact-url }}>)
@@ -102,8 +103,8 @@ jobs:
           embed-url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
           embed-description: |
             **Version**: ${{ env.FFZ_VERSION }}.${{ env.FFZ_BUILD }}
-            **Main Client Commit**: [${{ env.CLIENT_COMMIT_HASH }}](<https://github.com/FrankerFaceZ/FrankerFaceZ/commit/${{ env.CLIENT_COMMIT_HASH }}>)
-            **Add-Ons Commit**: [${{ env.ADDONS_COMMIT_HASH }}](<https://github.com/FrankerFaceZ/Add-Ons/commit/${{ env.ADDONS_COMMIT_HASH }}>)
+            **Main Client Commit**: [${{ env.CLIENT_COMMIT }}](<https://github.com/FrankerFaceZ/FrankerFaceZ/commit/${{ env.CLIENT_COMMIT }}>)
+            **Add-Ons Commit**: [${{ env.ADDONS_COMMIT }}](<https://github.com/FrankerFaceZ/Add-Ons/commit/${{ env.ADDONS_COMMIT }}>)
             
             Please check the logs for details.
             
