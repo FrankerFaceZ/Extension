@@ -9,17 +9,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Extension Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Uses PNPM
-        uses: pnpm/action-setup@v2.0.1
+        uses: pnpm/action-setup@v4
         with:
-          version: 8.10.2
+          version: 8
+          run_install: false
 
       - name: Uses Node.js 18.x
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: 18
           cache: 'pnpm'
 
       - name: Clone FrankerFaceZ Repository
@@ -79,7 +80,7 @@ jobs:
 
       - name: Report Success
         if: success()
-        uses: tsickert/discord-webhook@v5.3.0
+        uses: tsickert/discord-webhook@v6
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           embed-color: 3066993
@@ -95,7 +96,7 @@ jobs:
 
       - name: Report Failure
         if: failure()
-        uses: tsickert/discord-webhook@v5.3.0
+        uses: tsickert/discord-webhook@v6
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           embed-color: 15158332
