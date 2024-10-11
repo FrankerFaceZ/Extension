@@ -79,14 +79,14 @@ jobs:
         if: success()
         run: |
           cd dist
-          zip -r ../frankerfacez-extension.zip *
+          zip -r ../frankerfacez-extension-$FFZ_VERSION.$FFZ_BUILD.zip *
           cd ..
 
       - name: Attest Output
         if: success()
         uses: actions/attest-build-provenance@v1
         with:
-          subject-path: frankerfacez-extension.zip
+          subject-path: frankerfacez-extension-${{ env.FFZ_VERSION }}.${{ env.FFZ_BUILD }}.zip
 
       - name: Upload Output
         id: artifact-upload-step
@@ -94,7 +94,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: extension
-          path: frankerfacez-extension.zip
+          path: frankerfacez-extension-${{ env.FFZ_VERSION }}.${{ env.FFZ_BUILD }}.zip
 
       - name: Report Success
         if: success()
