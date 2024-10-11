@@ -75,16 +75,18 @@ jobs:
       - name: Edit Manifest (Insert Version)
         run: node scripts/update-manifest.js
 
-      - name: ZIP Output
+      - name: Package Output
         if: success()
         run: |
-          zip -r extension.zip dist/*
+          cd dist
+          zip -r ../frankerfacez-extension.zip *
+          cd ..
 
       - name: Attest Output
         if: success()
         uses: actions/attest-build-provenance@v1
         with:
-          subject-path: extension.zip
+          subject-path: frankerfacez-extension.zip
 
       - name: Upload Output
         id: artifact-upload-step
@@ -92,7 +94,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: extension
-          path: extension.zip
+          path: frankerfacez-extension.zip
 
       - name: Report Success
         if: success()
