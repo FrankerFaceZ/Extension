@@ -4,7 +4,8 @@
 	"short_name": "FFZ",
 	"version": "__DEV__",
 
-	"description": "Get custom emotes and tons of new features you'll never want to go without.",
+	"description": "The Twitch enhancement suite. Get custom emotes and tons of new features you'll never want to go without.",
+
 	"icons": {
 		"128": "icon128.png",
 		"16": "icon16.png",
@@ -12,10 +13,8 @@
 	},
 
 	"homepage_url": "http://www.frankerfacez.com",
-	"permissions": [
-        "storage"
-    ],
-    "host_permissions": [
+
+	"host_permissions": [
 		"*://*.twitch.tv/*",
 		"*://*.frankerfacez.com/*"
 	],
@@ -26,16 +25,21 @@
 			"*://*.youtube.com/*"
 		]
 	},
+	
+	"web_accessible_resources": [
+		{
+			"resources": ["web/*"],
+			"matches": [
+				"*://*.twitch.tv/*",
+				"*://*.youtube.com/*"
+			]
+		}
+	],
 
-    "web_accessible_resources": [
-        {
-            "resources": ["web/*"],
-            "matches": [
-                "*://*.twitch.tv/*",
-                "*://*.youtube.com/*"
-            ]
-        }
-    ],
+	"background": {
+		"scripts": ["web/worker.js"],
+		"service_worker": "web/worker.js"
+	},
 
 	"content_scripts": [
 		{
@@ -56,6 +60,7 @@
 			]
 		}
 	],
+
 	"browser_specific_settings": {
 		"gecko": {
 			"id": "frankerfacez@frankerfacez.com"

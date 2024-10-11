@@ -7,6 +7,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      actions: read
+      contents: write
+      attestations: write
     steps:
       - name: Checkout Extension Repo
         uses: actions/checkout@v4
@@ -70,13 +75,24 @@ jobs:
       - name: Edit Manifest (Insert Version)
         run: node scripts/update-manifest.js
 
+      - name: ZIP Output
+        if: success()
+        run: |
+          zip -r extension.zip dist/*
+
+      - name: Attest Output
+        if: success()
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: extension.zip
+
       - name: Upload Output
         id: artifact-upload-step
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: built
-          path: dist/*
+          name: extension
+          path: extension.zip
 
       - name: Report Success
         if: success()
