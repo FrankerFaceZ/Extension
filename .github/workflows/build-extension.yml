@@ -135,7 +135,8 @@ jobs:
             **Main Client Commit**: [${{ env.CLIENT_COMMIT }}](<https://github.com/FrankerFaceZ/FrankerFaceZ/commit/${{ env.CLIENT_COMMIT }}>)
             **Add-Ons Commit**: [${{ env.ADDONS_COMMIT }}](<https://github.com/FrankerFaceZ/Add-Ons/commit/${{ env.ADDONS_COMMIT }}>)
             
-            ```${{ env.LATEST_MESSAGE }}```
+            ```
+            ${{ env.LATEST_MESSAGE }}```
 
             [Download Source](<${{ steps.source-upload-step.outputs.artifact-url }}>)
             [Download Extension](<${{ steps.artifact-upload-step.outputs.artifact-url }}>)
@@ -154,7 +155,8 @@ jobs:
             **Main Client Commit**: [${{ env.CLIENT_COMMIT }}](<https://github.com/FrankerFaceZ/FrankerFaceZ/commit/${{ env.CLIENT_COMMIT }}>)
             **Add-Ons Commit**: [${{ env.ADDONS_COMMIT }}](<https://github.com/FrankerFaceZ/Add-Ons/commit/${{ env.ADDONS_COMMIT }}>)
             
-            ```${{ env.LATEST_MESSAGE }}```
+            ```
+            ${{ env.LATEST_MESSAGE }}```
 
             Please check the logs for details.
             
