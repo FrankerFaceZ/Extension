@@ -96,31 +96,31 @@ jobs:
           name: extension
           path: frankerfacez-extension-${{ env.FFZ_VERSION }}.${{ env.FFZ_BUILD }}.zip
 
-      - name: Now, Testing
+      - name: Now, Nightly
         if: success()
         run: |
-          node scripts/testing-manifest.js
+          node scripts/nightly-manifest.js
 
-      - name: Package Testing
+      - name: Package Nightly
         if: success()
         run: |
           cd dist
-          zip -r ../frankerfacez-testing-$FFZ_VERSION.$FFZ_BUILD.zip *
+          zip -r ../frankerfacez-nightly-$FFZ_VERSION.$FFZ_BUILD.zip *
           cd ..
 
-      - name: Attest Testing
+      - name: Attest Nightly
         if: success()
         uses: actions/attest-build-provenance@v1
         with:
-          subject-path: frankerfacez-testing-${{ env.FFZ_VERSION }}.${{ env.FFZ_BUILD }}.zip
+          subject-path: frankerfacez-nightly-${{ env.FFZ_VERSION }}.${{ env.FFZ_BUILD }}.zip
 
-      - name: Upload Testing
-        id: artifact-upload-step-testing
+      - name: Upload Nightly
+        id: artifact-upload-step-nightly
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: testing
-          path: frankerfacez-testing-${{ env.FFZ_VERSION }}.${{ env.FFZ_BUILD }}.zip
+          name: nightly
+          path: frankerfacez-nightly-${{ env.FFZ_VERSION }}.${{ env.FFZ_BUILD }}.zip
 
       - name: Report Success
         if: success()
@@ -140,7 +140,7 @@ jobs:
 
             [Download Source](<${{ steps.source-upload-step.outputs.artifact-url }}>)
             [Download Extension](<${{ steps.artifact-upload-step.outputs.artifact-url }}>)
-            [Download Testing](<${{ steps.artifact-upload-step-testing.outputs.artifact-url }}>)
+            [Download Nightly](<${{ steps.artifact-upload-step-nightly.outputs.artifact-url }}>)
 
       - name: Report Failure
         if: failure()
