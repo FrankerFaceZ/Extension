@@ -17,7 +17,7 @@ ADDONS_MESSAGE=$(git log -1 --pretty=format:%B)
 cd ..
 
 # Determine which commit message is most recent
-if [ "$LAST_MODIFIED" -gte "$ADDONS_LAST" ]; then
+if [ "$LAST_MODIFIED" -gt "$ADDONS_LAST" ]; then
     LATEST_MESSAGE="$CLIENT_MESSAGE"
 else
     LATEST_MESSAGE="$ADDONS_MESSAGE"
