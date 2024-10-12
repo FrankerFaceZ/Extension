@@ -75,26 +75,52 @@ jobs:
       - name: Edit Manifest (Insert Version)
         run: node scripts/update-manifest.js
 
-      - name: Package Output
+      - name: Package Extension
         if: success()
         run: |
           cd dist
           zip -r ../frankerfacez-extension-$FFZ_VERSION.$FFZ_BUILD.zip *
           cd ..
 
-      - name: Attest Output
+      - name: Attest Extension
         if: success()
         uses: actions/attest-build-provenance@v1
         with:
           subject-path: frankerfacez-extension-${{ env.FFZ_VERSION }}.${{ env.FFZ_BUILD }}.zip
 
-      - name: Upload Output
+      - name: Upload Extension
         id: artifact-upload-step
         if: success()
         uses: actions/upload-artifact@v4
         with:
           name: extension
           path: frankerfacez-extension-${{ env.FFZ_VERSION }}.${{ env.FFZ_BUILD }}.zip
+
+      - name: Now, Testing
+        if: success()
+        run: |
+          node scripts/testing-manifest.js
+
+      - name: Package Testing
+        if: success()
+        run: |
+          cd dist
+          zip -r ../frankerfacez-testing-$FFZ_VERSION.$FFZ_BUILD.zip *
+          cd ..
+
+      - name: Attest Testing
+        if: success()
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: frankerfacez-testing-${{ env.FFZ_VERSION }}.${{ env.FFZ_BUILD }}.zip
+
+      - name: Upload Testing
+        id: artifact-upload-step-testing
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: testing
+          path: frankerfacez-testing-${{ env.FFZ_VERSION }}.${{ env.FFZ_BUILD }}.zip
 
       - name: Report Success
         if: success()
@@ -109,8 +135,11 @@ jobs:
             **Main Client Commit**: [${{ env.CLIENT_COMMIT }}](<https://github.com/FrankerFaceZ/FrankerFaceZ/commit/${{ env.CLIENT_COMMIT }}>)
             **Add-Ons Commit**: [${{ env.ADDONS_COMMIT }}](<https://github.com/FrankerFaceZ/Add-Ons/commit/${{ env.ADDONS_COMMIT }}>)
             
+            ```${{ env.LATEST_MESSAGE }}```
+
             [Download Source](<${{ steps.source-upload-step.outputs.artifact-url }}>)
-            [Download Artifact](<${{ steps.artifact-upload-step.outputs.artifact-url }}>)
+            [Download Extension](<${{ steps.artifact-upload-step.outputs.artifact-url }}>)
+            [Download Testing](<${{ steps.artifact-upload-step-testing.outputs.artifact-url }}>)
 
       - name: Report Failure
         if: failure()
@@ -125,6 +154,8 @@ jobs:
             **Main Client Commit**: [${{ env.CLIENT_COMMIT }}](<https://github.com/FrankerFaceZ/FrankerFaceZ/commit/${{ env.CLIENT_COMMIT }}>)
             **Add-Ons Commit**: [${{ env.ADDONS_COMMIT }}](<https://github.com/FrankerFaceZ/Add-Ons/commit/${{ env.ADDONS_COMMIT }}>)
             
+            ```${{ env.LATEST_MESSAGE }}```
+
             Please check the logs for details.
             
             [Download Source](<${{ steps.source-upload-step.outputs.artifact-url }}>)
