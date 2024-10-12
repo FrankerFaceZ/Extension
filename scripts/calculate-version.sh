@@ -31,15 +31,17 @@ echo ""
 echo "Build Version: $BUILD"
 echo "Commit: $ADDONS_COMMIT"
 echo ""
-echo "Latest Commit Message: $LATEST_MESSAGE"
+echo "Latest Commit Message:"
+echo "$LATEST_MESSAGE"
 
 # Export our environmental variables
 echo "CLIENT_COMMIT=$CLIENT_COMMIT" >> .env
 echo "FFZ_VERSION=$VERSION" >> .env
 echo "ADDONS_COMMIT=$ADDONS_COMMIT" >> .env
 echo "FFZ_BUILD=$BUILD" >> .env
-printf 'LATEST_MESSAGE="%s"\n' "$(echo "$LATEST_MESSAGE" | sed 's/"/\\"/g')" >> .env
-echo "$LATEST_MESSAGE" > latest_commit.txt
+echo 'LATEST_MESSAGE<<__EOCMHERE__' >> .env
+echo "$LATEST_MESSAGE" >> .env
+echo "__EOCMHERE__" >> .env
 
 # Export our environmental variables (for the source archive)
 echo "export CLIENT_COMMIT=$CLIENT_COMMIT" >> ffz_env
