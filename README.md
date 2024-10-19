@@ -17,20 +17,69 @@ Requirements
 * git
 
 
-How to Build
-============
+How to Build: Source Archive (Firefox Staff: Use This!)
+=======================================================
+
+These instructions assume you're starting with a prepared archive of the
+relevant source material. You can find such an archive by grabbing the
+source artifact from a run of our build process on GitHub. Additionally,
+we submit copies of the source artifact when uploading to Firefox due
+to Firefox's approval requirements.
+
 1. Ensure you have the requirements installed on your machine.
-2. Ensure you're working with a clean copy of the source.
-   If you are working with a source archive, you should already have the
-   relevant files downloaded into the `client` and `addons` folders. If
-   you don't have those, run the following `git` commands to download the
-   latest code from those repositories:
+2. Run this command to load the cached environmental variables with
+   version info:
+   ```bash
+   source ffz_env
+   ```
+3. Build the main client.
+   ```bash
+   cd client
+   pnpm install
+   pnpm build:ext
+   cd ..
+   ```
+4. Build the add-ons.
+   ```bash
+   cd addons
+   pnpm install
+   pnpm build:ext
+   cd ..
+   ```
+5. Ensure you don't have a `dist` folder. Delete it if you do with:
+   ```bash
+   rm -rf dist
+   ```
+6. Copy the build output from steps 5 and 6 into the `dist` folder:
+   ```bash
+   chmod +x scripts/copy-output.sh
+   ./scripts/copy-output.sh
+   ```
+7. Update the version in the manifest.
+   ```bash
+   node scripts/update-manifest.js
+   ```
+8. Find the unpacked extension in the `dist` folder.
+
+That's it. You're done! You can now zip the extension, if you need to, or
+do anything else.
+
+
+How to Build: Complete From Scratch (Firefox Staff: You don't need this!)
+=========================================================================
+
+These instructions assume you're working from a clean checkout of the
+Extension repository itself, without any pre-downloaded source.
+
+1. Ensure you have the requirements installed on your machine.
+2. Run the following `git` commands to download the
+   latest source code from FrankerFaceZ's repositories:
    ```bash
    git clone https://github.com/FrankerFaceZ/FrankerFaceZ.git client
    git clone https://github.com/FrankerFaceZ/Add-Ons.git addons
    ```
-3. If you had to download the code via git clone, run these commands to
-   calculate the correct version:
+3. Run these commands to calculate the correct version information based
+   on the state of the git repositories:
    ```bash
    chmod +x scripts/calculate-version.sh
    ./scripts/calculate-version.sh
@@ -43,14 +92,14 @@ How to Build
    ```bash
    cd client
    pnpm install
-   FFZ_EXTENSION=true pnpm build
+   pnpm build:ext
    cd ..
    ```
 6. Build the add-ons.
    ```bash
    cd addons
    pnpm install
-   FFZ_EXTENSION=true pnpm build
+   pnpm build:ext
    cd ..
    ```
 7. Ensure you don't have a `dist` folder. Delete it if you do with:
@@ -67,4 +116,6 @@ How to Build
    node scripts/update-manifest.js
    ```
 10. Find the unpacked extension in the `dist` folder.
-11. Optionally, zip the contents of the `dist` as suits your needs.
+
+That's it. You're done! You can now zip the extension, if you need to, or
+do anything else.

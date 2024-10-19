@@ -1,5 +1,22 @@
 #!/bin/bash
 
+# Function to check if a directory is a valid git repository
+check_git_repo() {
+    local dir="$1"
+    if [ ! -d "$dir" ]; then
+        echo "Error: The directory '$dir' does not exist. Please follow the instructions in README to set up the working sources."
+        exit 1
+    fi
+    if ! git -C "$dir" rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+        echo "The directory '$dir' does not contain a valid git repository. You likely didn't need to run this command."
+        exit 1
+    fi
+}
+
+# Check to make sure we have git repos.
+check_git_repo "client"
+check_git_repo "addons"
+
 # Get the version of the main client.
 cd client
 VERSION=$(node -p "require('./package.json').version")
