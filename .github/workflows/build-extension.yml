@@ -53,6 +53,7 @@ jobs:
             scripts/*
             ffz_env
             README.md
+            build.sh
 
       - name: Build the Main Client
         run: |
