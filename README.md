@@ -20,46 +20,16 @@ Requirements
 How to Build: Source Archive (Firefox Staff: Use This!)
 =======================================================
 
-These instructions assume you're starting with a prepared archive of the
-relevant source material. You can find such an archive by grabbing the
-source artifact from a run of our build process on GitHub. Additionally,
-we submit copies of the source artifact when uploading to Firefox due
-to Firefox's approval requirements.
+There is a special build script called `build.sh` for building from
+a prepared source archive. Just:
 
 1. Ensure you have the requirements installed on your machine.
-2. Run this command to load the cached environmental variables with
-   version info:
+2. Ensure `build.sh` is executable and run it:
    ```bash
-   source ffz_env
+   chmod +x build.sh
+   ./build.sh
    ```
-3. Build the main client.
-   ```bash
-   cd client
-   pnpm install
-   pnpm build:ext
-   cd ..
-   ```
-4. Build the add-ons.
-   ```bash
-   cd addons
-   pnpm install
-   pnpm build:ext
-   cd ..
-   ```
-5. Ensure you don't have a `dist` folder. Delete it if you do with:
-   ```bash
-   rm -rf dist
-   ```
-6. Copy the build output from steps 5 and 6 into the `dist` folder:
-   ```bash
-   chmod +x scripts/copy-output.sh
-   ./scripts/copy-output.sh
-   ```
-7. Update the version in the manifest.
-   ```bash
-   node scripts/update-manifest.js
-   ```
-8. Find the unpacked extension in the `dist` folder.
+3. Find the unpacked extension in the `dist` folder.
 
 That's it. You're done! You can now zip the extension, if you need to, or
 do anything else.
