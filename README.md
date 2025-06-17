@@ -12,8 +12,8 @@ However, the individual steps can be performed manually should you wish.
 
 Requirements
 ============
-* node 18+
-* pnpm 8+
+* node 22+
+* pnpm 10+
 * git
 
 
@@ -61,14 +61,14 @@ Extension repository itself, without any pre-downloaded source.
 5. Build the main client.
    ```bash
    cd client
-   pnpm install
+   pnpm install --frozen-lockfile
    pnpm build:ext
    cd ..
    ```
 6. Build the add-ons.
    ```bash
    cd addons
-   pnpm install
+   pnpm install --frozen-lockfile
    pnpm build:ext
    cd ..
    ```

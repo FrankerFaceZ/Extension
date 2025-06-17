@@ -6,13 +6,13 @@ source ffz_env
 
 # Build the main client
 cd client
-pnpm install
+pnpm install --frozen-lockfile
 pnpm build:ext
 cd ..
 
 # Build the add-ons
 cd addons
-pnpm install
+pnpm install --frozen-lockfile
 pnpm build:ext
 cd ..
 

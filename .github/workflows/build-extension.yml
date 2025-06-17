@@ -19,13 +19,13 @@ jobs:
       - name: Uses PNPM
         uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 10
           run_install: false
 
-      - name: Uses Node.js 18.x
+      - name: Uses Node.js 22.x
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
           cache: 'pnpm'
 
       - name: Clone FrankerFaceZ Repository
@@ -58,14 +58,14 @@ jobs:
       - name: Build the Main Client
         run: |
           cd client
-          pnpm install
+          pnpm install --frozen-lockfile
           pnpm build:ext
           cd ..
 
       - name: Build the Add-Ons Repository
         run: |
           cd addons
-          pnpm install
+          pnpm install --frozen-lockfile
           pnpm build:ext
           cd ..
 
