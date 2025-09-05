@@ -15,6 +15,11 @@
 	"homepage_url": "http://www.frankerfacez.com",
 
 	"action": { },
+	
+	"permissions": [
+		"storage",
+		"unlimitedStorage"
+	],
 
 	"host_permissions": [
 		"*://*.twitch.tv/*",
